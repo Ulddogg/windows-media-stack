@@ -9,9 +9,18 @@ reproducible alternative to clicking through each app's web UI.
 
 ## Files
 
+Run the numbered scripts **in order** after copying `.env.example` → `.env`.
+
 | File | Purpose | Run as |
 |---|---|---|
 | `lib/arr-common.ps1` | shared helpers: load `.env`, read an app's API key, `Invoke-Arr` REST wrapper, the array-unwrap helper | dot-sourced |
+| `01-create-folders.ps1` | create the `C:\data` tree + prove hardlinks work on the volume | user |
+| `02-download-clients.ps1` | add qBittorrent + SABnzbd to Sonarr & Radarr (skips existing) | user |
+| `03-indexers.ps1` | pattern for adding indexers in Prowlarr + trigger app sync (bring-your-own) | user |
+| `04-quality-profiles.ps1` | sync TRaSH quality profiles with Recyclarr | real terminal |
+| `05-delay-profiles.ps1` | set the Usenet-first delay profile on both apps | user |
+| `06-custom-formats.ps1` | import the custom formats (Danish audio, AD blocker) | user |
+| `07-verify.ps1` | health check: services, indexer sync, delay profile | user |
 | `register-autostart.ps1` | register logon scheduled tasks for Bazarr / Seerr / FlareSolverr / SABnzbd | **elevated** |
 | `sabnzbd/start-sabnzbd.vbs` | hidden launcher for SABnzbd's console exe (the working Windows approach) | called by the task |
 

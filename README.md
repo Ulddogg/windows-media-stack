@@ -1,10 +1,17 @@
 # Windows Media Stack
 
+![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)
+![Platform: Windows](https://img.shields.io/badge/platform-Windows-0078D6)
+![Docker: not required](https://img.shields.io/badge/Docker-not%20required-success)
+![Operated with Claude Code](https://img.shields.io/badge/operated%20with-Claude%20Code-d97757)
+
 A **native-Windows, no-Docker** home media automation stack — the full *arr suite
 (Prowlarr, Sonarr, Radarr, Bazarr), SABnzbd + qBittorrent, a request front-end, and
 Plex — installed as real Windows services and scheduled tasks, configured entirely
 through each app's REST API, with a VPN kill-switch, hardlink-based storage, and an
 operational runbook an AI agent (Claude Code) can drive.
+
+![Signal path: request in, watched out](docs/images/architecture.svg)
 
 Most published "arr stacks" are Docker Compose files that run Linux containers. This
 one deliberately isn't: it targets people running everything **directly on Windows**,
@@ -89,8 +96,9 @@ Windows software commonly claims it.
 ├── config/
 │   ├── recyclarr/                # TRaSH quality-profile configs (keys templated)
 │   └── custom-formats/           # importable custom-format JSON (Danish audio, AD block)
-├── scripts/                      # PowerShell API-automation + autostart registration
-└── dashboard/                    # one-page "remote" that links every local tool
+├── scripts/                      # numbered PowerShell API-automation (01–07) + autostart
+├── dashboard/                    # one-page "remote" that links every local tool
+└── .github/workflows/            # CI: gitleaks secret scan + PSScriptAnalyzer lint
 ```
 
 ## Getting started
@@ -99,8 +107,9 @@ Windows software commonly claims it.
    [`docs/build-spec.md`](docs/build-spec.md).
 2. Copy `.env.example` → `.env` and fill in your own ports, paths, keys, and services.
 3. Follow [`docs/installation.md`](docs/installation.md) to install the apps natively.
-4. Run the scripts in [`scripts/`](scripts/) (or let Claude Code drive them) to configure
-   download clients, indexers, quality and delay profiles.
+4. Run the numbered scripts in [`scripts/`](scripts/) in order (or let Claude Code drive
+   them): `01` folders + hardlink test → `02` download clients → `03` indexers →
+   `04` quality profiles → `05` delay profiles → `06` custom formats → `07` verify.
 5. Run the hardlink verification test in [`docs/installation.md`](docs/installation.md)
    before importing anything real.
 

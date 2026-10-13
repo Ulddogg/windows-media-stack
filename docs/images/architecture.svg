@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 300" width="980" height="300" font-family="'Segoe UI',system-ui,sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#6a7583"/>
+    </marker>
+    <marker id="arrowG" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#4ad48d"/>
+    </marker>
+    <marker id="arrowA" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#f4b43c"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="980" height="300" rx="16" fill="#0c0f14"/>
+  <text x="28" y="36" fill="#e9eef5" font-size="18" font-weight="700">Windows Media Stack — signal path</text>
+  <text x="28" y="56" fill="#9aa6b6" font-size="12.5">Request in, watched out. One NTFS volume, hardlinked. Usenet-first, torrent fallback.</text>
+
+  <!-- stage boxes -->
+  <!-- Seerr -->
+  <rect x="24" y="118" width="120" height="52" rx="9" fill="#151b24" stroke="#28313f"/>
+  <text x="84" y="142" fill="#e9eef5" font-size="13" font-weight="600" text-anchor="middle">Seerr</text>
+  <text x="84" y="159" fill="#6a7583" font-size="10.5" text-anchor="middle">request</text>
+
+  <!-- Prowlarr -->
+  <rect x="168" y="118" width="120" height="52" rx="9" fill="#151b24" stroke="#28313f"/>
+  <text x="228" y="142" fill="#e9eef5" font-size="13" font-weight="600" text-anchor="middle">Prowlarr</text>
+  <text x="228" y="159" fill="#6a7583" font-size="10.5" text-anchor="middle">find</text>
+
+  <!-- Sonarr/Radarr -->
+  <rect x="312" y="118" width="120" height="52" rx="9" fill="#151b24" stroke="#28313f"/>
+  <text x="372" y="142" fill="#e9eef5" font-size="13" font-weight="600" text-anchor="middle">Sonarr / Radarr</text>
+  <text x="372" y="159" fill="#6a7583" font-size="10.5" text-anchor="middle">grab</text>
+
+  <!-- SABnzbd (usenet, preferred) -->
+  <rect x="470" y="60" width="138" height="52" rx="9" fill="#151b24" stroke="#4ad48d"/>
+  <text x="539" y="84" fill="#e9eef5" font-size="13" font-weight="600" text-anchor="middle">SABnzbd</text>
+  <text x="539" y="101" fill="#4ad48d" font-size="10.5" text-anchor="middle">Usenet · preferred</text>
+
+  <!-- qBittorrent (torrent, VPN) -->
+  <rect x="470" y="176" width="138" height="52" rx="9" fill="#151b24" stroke="#f4b43c"/>
+  <text x="539" y="200" fill="#e9eef5" font-size="13" font-weight="600" text-anchor="middle">qBittorrent</text>
+  <text x="539" y="217" fill="#f4b43c" font-size="10.5" text-anchor="middle">torrent · VPN kill-switch</text>
+
+  <!-- Import / hardlink -->
+  <rect x="648" y="118" width="128" height="52" rx="9" fill="#151b24" stroke="#28313f"/>
+  <text x="712" y="140" fill="#e9eef5" font-size="13" font-weight="600" text-anchor="middle">Import</text>
+  <text x="712" y="157" fill="#6a7583" font-size="10.5" text-anchor="middle">hardlink · subs</text>
+
+  <!-- Plex -->
+  <rect x="812" y="118" width="120" height="52" rx="9" fill="#151b24" stroke="#28313f"/>
+  <text x="872" y="142" fill="#e9eef5" font-size="13" font-weight="600" text-anchor="middle">Plex</text>
+  <text x="872" y="159" fill="#6a7583" font-size="10.5" text-anchor="middle">watch</text>
+
+  <!-- arrows -->
+  <line x1="144" y1="144" x2="166" y2="144" stroke="#6a7583" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="288" y1="144" x2="310" y2="144" stroke="#6a7583" stroke-width="2" marker-end="url(#arrow)"/>
+  <!-- split -->
+  <path d="M432,138 C452,138 452,92 468,88" fill="none" stroke="#4ad48d" stroke-width="2" marker-end="url(#arrowG)"/>
+  <path d="M432,150 C452,150 452,200 468,200" fill="none" stroke="#f4b43c" stroke-width="2" marker-end="url(#arrowA)"/>
+  <!-- merge -->
+  <path d="M608,88 C630,92 630,134 646,138" fill="none" stroke="#4ad48d" stroke-width="2" marker-end="url(#arrowG)"/>
+  <path d="M608,200 C630,200 630,156 646,152" fill="none" stroke="#f4b43c" stroke-width="2" marker-end="url(#arrowA)"/>
+  <!-- to plex -->
+  <line x1="776" y1="144" x2="810" y2="144" stroke="#6a7583" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <text x="28" y="285" fill="#6a7583" font-size="10.5">Native Windows services + scheduled tasks · no Docker · configured via each app's REST API</text>
+</svg>

@@ -1,0 +1,21 @@
+# Normalize line endings so Windows checkouts stop warning about LF/CRLF.
+* text=auto eol=lf
+
+# Windows-native script types keep CRLF (they're run on Windows).
+*.ps1  text eol=crlf
+*.psm1 text eol=crlf
+*.psd1 text eol=crlf
+*.vbs  text eol=crlf
+*.cmd  text eol=crlf
+*.bat  text eol=crlf
+
+# Keep shell scripts and YAML LF.
+*.sh   text eol=lf
+*.yml  text eol=lf
+*.yaml text eol=lf
+
+# Treat images/binaries as binary.
+*.png binary
+*.jpg binary
+*.gif binary
+*.ico binary

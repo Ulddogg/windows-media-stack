@@ -1,0 +1,38 @@
+name: ci
+
+# Read-only by default; least privilege.
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  # The most important check for this repo: make sure no real secret ever lands
+  # in a commit. (gitleaks-action is free for public repositories.)
+  secret-scan:
+    runs-on: ubuntu-latest
+    steps:
+      # NOTE: for hardening, pin these actions to a commit SHA instead of a tag.
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0          # scan full history, not just the tip
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # Lint the PowerShell so the automation scripts stay clean.
+  lint-powershell:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: PSScriptAnalyzer
+        shell: pwsh
+        run: |
+          Install-Module PSScriptAnalyzer -Force -Scope CurrentUser
+          $issues = Invoke-ScriptAnalyzer -Path . -Recurse -Severity Warning,Error
+          $issues | Format-Table -AutoSize
+          if ($issues | Where-Object Severity -eq 'Error') { throw 'PSScriptAnalyzer found errors' }
