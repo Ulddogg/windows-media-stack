@@ -1,0 +1,21 @@
+# gitleaks configuration for windows-media-stack
+#
+# Extends the default ruleset and allowlists the only known false positives:
+# the Recyclarr configs contain public TRaSH Guides identifiers (`trash_id`,
+# 32-char hex) that look like high-entropy secrets but are documented public
+# values, and `.env.example` is all templated placeholders.
+#
+# No real secret ever lives in this repo -- actual keys go in a git-ignored
+# `.env`. Everything else is still scanned normally.
+
+title = "windows-media-stack"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Public TRaSH Guides custom-format IDs and templated placeholders (not secrets)."
+paths = [
+  '''config/recyclarr/.*\.ya?ml''',
+  '''\.env\.example''',
+]
