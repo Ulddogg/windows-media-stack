@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Media Stack Remote</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#0c0f14; --bg-a:#10151d; --bg-b:#0a0d12;
+    --surface:#151b24; --surface-2:#1a212c;
+    --line:#28313f; --line-soft:#1e2631;
+    --ink:#e9eef5; --ink-dim:#9aa6b6; --ink-faint:#6a7583;
+    --amber:#f4b43c; --amber-ink:#ffce6b;
+    --amber-soft:rgba(244,180,60,.13); --amber-line:rgba(244,180,60,.38);
+    --green:#4ad48d; --green-soft:rgba(74,212,141,.16);
+    --radius:14px;
+    --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --display:"Chakra Petch","IBM Plex Sans",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background-color:var(--bg);
+    background-image:radial-gradient(1100px 520px at 50% -8%, #16202c 0%, transparent 62%),linear-gradient(180deg,var(--bg-a),var(--bg-b));
+    background-attachment:fixed;color:var(--ink);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1060px;margin:0 auto;padding:clamp(22px,4vw,46px) clamp(16px,4vw,30px) 60px}
+  .head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:18px 24px;padding-bottom:22px;border-bottom:1px solid var(--line-soft)}
+  .brandmark{display:flex;align-items:center;gap:13px}
+  .knob{width:34px;height:34px;border-radius:9px;flex:none;background:radial-gradient(circle at 34% 30%,#2c3543,#141a22);border:1px solid var(--line);position:relative;box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 4px 12px rgba(0,0,0,.4)}
+  .knob::after{content:"";position:absolute;top:6px;left:50%;width:2px;height:9px;border-radius:2px;background:var(--amber);transform:translateX(-50%);box-shadow:0 0 7px var(--amber)}
+  .brand h1{font-family:var(--display);font-weight:700;letter-spacing:.14em;font-size:1.02rem;margin:0;line-height:1.1;text-transform:uppercase}
+  .brand p{margin:2px 0 0;font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;color:var(--ink-faint)}
+  .status{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:.72rem;letter-spacing:.03em;color:var(--ink-dim);background:var(--surface);border:1px solid var(--line);padding:6px 11px;border-radius:100px;white-space:nowrap}
+  .chip .led{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
+  .chip.amber .led{background:var(--amber);box-shadow:0 0 8px var(--amber)}
+  .lede{margin:30px 0 8px}
+  .lede h2{font-family:var(--display);font-weight:600;font-size:clamp(1.6rem,4.4vw,2.25rem);line-height:1.08;letter-spacing:-.01em;margin:0;text-wrap:balance;max-width:20ch}
+  .lede h2 em{font-style:normal;color:var(--amber-ink)}
+  .lede p{margin:12px 0 0;color:var(--ink-dim);max-width:60ch;font-size:1rem}
+  .eyebrow{display:flex;align-items:center;gap:12px;margin:42px 0 16px}
+  .eyebrow span{font-family:var(--mono);font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--amber);white-space:nowrap}
+  .eyebrow .num{color:var(--ink-faint)}
+  .eyebrow hr{flex:1;border:0;border-top:1px solid var(--line-soft);margin:0}
+  .path{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 8px;scrollbar-width:thin}
+  .stage{flex:1 0 auto;min-width:118px;display:flex;flex-direction:column;gap:5px;background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:12px 13px;position:relative}
+  .stage:not(:last-child)::after{content:"\203A";position:absolute;right:-11px;top:50%;transform:translateY(-50%);color:var(--ink-faint);font-size:1.1rem;font-family:var(--mono)}
+  .stage b{font-family:var(--display);font-weight:600;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase}
+  .stage small{font-family:var(--mono);font-size:.68rem;color:var(--ink-faint)}
+  .primary{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .pcard{position:relative;display:flex;flex-direction:column;gap:12px;min-height:172px;background:linear-gradient(160deg,var(--surface-2),var(--surface));border:1px solid var(--line);border-radius:var(--radius);padding:20px;overflow:hidden;transition:transform .18s,border-color .18s,box-shadow .18s}
+  .pcard::before{content:"";position:absolute;inset:0;border-radius:var(--radius);pointer-events:none;background:radial-gradient(340px 120px at 100% 0%,var(--amber-soft),transparent 70%);opacity:.8}
+  .pcard .top{display:flex;align-items:center;justify-content:space-between;gap:12px;position:relative}
+  .glyph{font-size:1.5rem;line-height:1}
+  .pcard h3{font-family:var(--display);font-weight:600;font-size:1.28rem;margin:0}
+  .role{font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);border:1px solid var(--amber-line);border-radius:100px;padding:3px 9px}
+  .pcard p{margin:0;color:var(--ink-dim);font-size:.95rem;position:relative;flex:1}
+  .pcard .foot{display:flex;align-items:center;justify-content:space-between;gap:10px;position:relative;margin-top:2px}
+  .addr{font-family:var(--mono);font-size:.78rem;color:var(--ink-faint)}
+  .open{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:.78rem;font-weight:500;color:#1a130a;background:var(--amber);border-radius:9px;padding:8px 14px;border:1px solid var(--amber);transition:filter .15s,box-shadow .15s}
+  .open:hover{filter:brightness(1.08);box-shadow:0 6px 16px rgba(244,180,60,.25)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:14px}
+  .mod{position:relative;display:flex;flex-direction:column;gap:9px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px 17px;transition:transform .18s,border-color .18s,box-shadow .18s,background .18s}
+  .mod .m-top{display:flex;align-items:center;gap:11px}
+  .mod .glyph{font-size:1.22rem}
+  .mod h4{font-family:var(--display);font-weight:600;font-size:1.02rem;margin:0;flex:1}
+  .dot{width:8px;height:8px;border-radius:50%;flex:none;background:var(--amber);box-shadow:0 0 0 0 var(--amber-soft),0 0 8px var(--amber)}
+  .mod p{margin:0;color:var(--ink-dim);font-size:.86rem;flex:1}
+  .mod .m-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:2px}
+  .port{font-family:var(--mono);font-size:.74rem;color:var(--ink-faint);background:var(--bg);border:1px solid var(--line-soft);border-radius:7px;padding:3px 8px}
+  .link{font-family:var(--mono);font-size:.74rem;color:var(--amber-ink)}
+  .mod.usenet .dot{background:var(--green);box-shadow:0 0 0 0 var(--green-soft),0 0 8px var(--green)}
+  .mod.usenet .link{color:var(--green)}
+  a.pcard:hover,a.mod:hover{transform:translateY(-3px);border-color:var(--amber-line);box-shadow:0 12px 28px rgba(0,0,0,.42)}
+  a.mod:hover{background:var(--surface-2)}
+  .mod.infra{background:transparent;border-style:dashed;border-color:var(--line-soft)}
+  .mod.infra .dot{background:var(--ink-faint);box-shadow:none}
+  .mod.infra .tag{font-family:var(--mono);font-size:.72rem;color:var(--ink-faint)}
+  footer{margin-top:46px;padding-top:20px;border-top:1px solid var(--line-soft);display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center;justify-content:space-between}
+  footer p{margin:0;font-family:var(--mono);font-size:.72rem;color:var(--ink-faint)}
+  @media (max-width:620px){.primary{grid-template-columns:1fr}.head{align-items:flex-start}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="head">
+    <div class="brandmark">
+      <div class="knob" aria-hidden="true"></div>
+      <div class="brand">
+        <h1>Media&nbsp;Stack&nbsp;Remote</h1>
+        <p>one deck, whole pipeline</p>
+      </div>
+    </div>
+    <div class="status">
+      <span class="chip amber"><span class="led"></span>VPN &middot; kill-switch</span>
+      <span class="chip"><span class="led"></span>Usenet &middot; preferred</span>
+      <span class="chip"><span class="led"></span>9 services &middot; localhost</span>
+    </div>
+  </header>
+
+  <section class="lede">
+    <h2>Request it once. <em>It handles the rest.</em></h2>
+    <p>Every tool in the stack, in one place. The two big buttons are all you touch day&#8209;to&#8209;day &mdash; the machinery below runs itself. Ports are examples; edit the links to match your install.</p>
+  </section>
+
+  <div class="eyebrow"><span><span class="num">00</span>&nbsp;&nbsp;Signal path</span><hr></div>
+  <div class="path" aria-label="How a request flows through the stack">
+    <div class="stage"><b>Request</b><small>Seerr</small></div>
+    <div class="stage"><b>Find</b><small>Prowlarr</small></div>
+    <div class="stage"><b>Grab</b><small>Sonarr / Radarr</small></div>
+    <div class="stage"><b>Download</b><small>SABnzbd &rarr; qBit</small></div>
+    <div class="stage"><b>Organize</b><small>hardlink &middot; Bazarr</small></div>
+    <div class="stage"><b>Watch</b><small>Plex</small></div>
+  </div>
+
+  <div class="eyebrow"><span><span class="num">01</span>&nbsp;&nbsp;Front of house</span><hr></div>
+  <section class="primary">
+    <a class="pcard" href="http://localhost:5055" target="_blank" rel="noopener">
+      <div class="top"><span class="glyph" aria-hidden="true">&#127871;</span><span class="role">Request</span></div>
+      <h3>Seerr</h3>
+      <p>Browse and request any show or movie in a clean UI. It routes straight to Sonarr &amp; Radarr with the right quality.</p>
+      <div class="foot"><span class="addr">localhost:5055</span><span class="open">Open&nbsp;&#8599;</span></div>
+    </a>
+    <a class="pcard" href="http://localhost:32400/web" target="_blank" rel="noopener">
+      <div class="top"><span class="glyph" aria-hidden="true">&#9654;</span><span class="role">Watch</span></div>
+      <h3>Plex</h3>
+      <p>Your finished library, streamed to any screen in the house &mdash; TV, phone, browser. This is where everything lands.</p>
+      <div class="foot"><span class="addr">localhost:32400</span><span class="open">Open&nbsp;&#8599;</span></div>
+    </a>
+  </section>
+
+  <div class="eyebrow"><span><span class="num">02</span>&nbsp;&nbsp;The machinery</span><hr></div>
+  <section class="grid">
+    <a class="mod" href="http://localhost:9696" target="_blank" rel="noopener">
+      <div class="m-top"><span class="glyph" aria-hidden="true">&#128225;</span><h4>Prowlarr</h4><span class="dot" aria-hidden="true"></span></div>
+      <p>Manages your indexers &mdash; torrent and Usenet sources &mdash; and feeds them to Sonarr &amp; Radarr automatically.</p>
+      <div class="m-foot"><span class="port">:9696</span><span class="link">Open &#8599;</span></div>
+    </a>
+    <a class="mod" href="http://localhost:8989" target="_blank" rel="noopener">
+      <div class="m-top"><span class="glyph" aria-hidden="true">&#128250;</span><h4>Sonarr</h4><span class="dot" aria-hidden="true"></span></div>
+      <p>Finds, grabs and files away TV episodes &mdash; 1080p, remux excluded.</p>
+      <div class="m-foot"><span class="port">:8989</span><span class="link">Open &#8599;</span></div>
+    </a>
+    <a class="mod" href="http://localhost:7878" target="_blank" rel="noopener">
+      <div class="m-top"><span class="glyph" aria-hidden="true">&#127916;</span><h4>Radarr</h4><span class="dot" aria-hidden="true"></span></div>
+      <p>The same engine for films &mdash; Bluray &amp; WEB encodes, remux and 4K left out by design.</p>
+      <div class="m-foot"><span class="port">:7878</span><span class="link">Open &#8599;</span></div>
+    </a>
+    <a class="mod usenet" href="http://localhost:8085" target="_blank" rel="noopener">
+      <div class="m-top"><span class="glyph" aria-hidden="true">&#128240;</span><h4>SABnzbd</h4><span class="dot" aria-hidden="true"></span></div>
+      <p>Usenet download client &mdash; the <b style="color:var(--green);font-weight:600">preferred path</b>. NZBs grab instantly; no VPN, no seeding, just fast pulls from your provider.</p>
+      <div class="m-foot"><span class="port">:8085</span><span class="link">Open &#8599;</span></div>
+    </a>
+    <a class="mod" href="http://localhost:8081" target="_blank" rel="noopener">
+      <div class="m-top"><span class="glyph" aria-hidden="true">&#129522;</span><h4>qBittorrent</h4><span class="dot" aria-hidden="true"></span></div>
+      <p>Torrent client &amp; fallback &mdash; used when Usenet has no hit. Bound to the VPN tunnel; if the VPN drops, it goes dark.</p>
+      <div class="m-foot"><span class="port">:8081</span><span class="link">Open &#8599;</span></div>
+    </a>
+    <a class="mod" href="http://localhost:6767" target="_blank" rel="noopener">
+      <div class="m-top"><span class="glyph" aria-hidden="true">&#128172;</span><h4>Bazarr</h4><span class="dot" aria-hidden="true"></span></div>
+      <p>Fetches subtitles for everything Sonarr &amp; Radarr pull in. Set your languages here.</p>
+      <div class="m-foot"><span class="port">:6767</span><span class="link">Open &#8599;</span></div>
+    </a>
+    <a class="mod" href="http://localhost:8191" target="_blank" rel="noopener">
+      <div class="m-top"><span class="glyph" aria-hidden="true">&#128737;</span><h4>FlareSolverr</h4><span class="dot" aria-hidden="true"></span></div>
+      <p>Clears Cloudflare bot-walls for stubborn indexers. Runs headless &mdash; link opens its health check.</p>
+      <div class="m-foot"><span class="port">:8191</span><span class="link">Status &#8599;</span></div>
+    </a>
+  </section>
+
+  <div class="eyebrow"><span><span class="num">03</span>&nbsp;&nbsp;Infrastructure</span><hr></div>
+  <section class="grid">
+    <div class="mod infra">
+      <div class="m-top"><span class="glyph" aria-hidden="true">&#128272;</span><h4>VPN</h4><span class="dot" aria-hidden="true"></span></div>
+      <p>WireGuard tunnel with a kill-switch. All torrent traffic is locked to its network adapter.</p>
+      <div class="m-foot"><span class="tag">your VPN client</span></div>
+    </div>
+    <div class="mod infra">
+      <div class="m-top"><span class="glyph" aria-hidden="true">&#128230;</span><h4>Usenet provider</h4><span class="dot" aria-hidden="true"></span></div>
+      <p>The servers SABnzbd pulls article data from. Bring your own; configure it in the SABnzbd UI.</p>
+      <div class="m-foot"><span class="tag">bring your own</span></div>
+    </div>
+    <div class="mod infra">
+      <div class="m-top"><span class="glyph" aria-hidden="true">&#129001;</span><h4>Indexers</h4><span class="dot" aria-hidden="true"></span></div>
+      <p>Newznab (Usenet) and torrent sources. Added in Prowlarr with your own accounts &mdash; never listed here.</p>
+      <div class="m-foot"><span class="tag">via Prowlarr</span></div>
+    </div>
+    <div class="mod infra">
+      <div class="m-top"><span class="glyph" aria-hidden="true">&#9881;</span><h4>Recyclarr</h4><span class="dot" aria-hidden="true"></span></div>
+      <p>Keeps the 1080p / no-remux quality profiles synced from the TRaSH Guides.</p>
+      <div class="m-foot"><span class="tag">CLI &middot; run on demand</span></div>
+    </div>
+  </section>
+
+  <footer>
+    <p>All links open each tool on <b style="color:var(--ink-dim);font-weight:500">this machine</b> (localhost). Bookmark this page.</p>
+    <p>C:\data &middot; hardlinked &middot; usenet-first &middot; VPN-locked</p>
+  </footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=https://schemas.recyclarr.dev/v8/config-schema.json
+################################################################################
+## TRaSH Guides: HD Bluray + WEB  (Radarr / movies)
+## https://trash-guides.info/Radarr/radarr-setup-quality-profiles/#hd-bluray-web
+##
+## API key is read from the environment, NOT stored here:
+##   PowerShell:  $env:RADARR_API_KEY = '...'   (or load from your .env)
+##   then:        recyclarr sync -c config/recyclarr/hd-bluray-web.yml
+################################################################################
+
+radarr:
+  hd-bluray-web:
+    base_url: http://localhost:7878
+    api_key: !env_var RADARR_API_KEY
+
+    quality_definition:
+      type: movie
+
+    quality_profiles:
+      - trash_id: d1d67249d3890e49bc12e275d989a7e9  # HD Bluray + WEB
+        reset_unmatched_scores:
+          enabled: true
+
+    custom_format_groups:
+      # Uncommented groups sync by default. See https://recyclarr.dev/guide/cf-groups/
+      add:
+        - trash_id: f8bf8eab4617f12dfdbd16303d8da245  # [Optional] Golden Rule HD
+        - trash_id: a3ac6af01d78e4f21fcb75f601ac96df  # [Unwanted] Unwanted Formats
+          # Unwanted by default: 3D, AV1, Bad Dual Groups, BR-DISK, Extras, LQ,
+          # Upscaled, etc. BR-DISK exclusion keeps 1080p remuxes (20-40 GB) out.
+
+      # These sync by default; uncomment to disable:
+      skip:
+        # - d9cc9a504e5ede6294c8b973aad4f028  # [Streaming Services] General

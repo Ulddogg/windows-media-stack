@@ -1,0 +1,15 @@
+{
+  "name": "Danish Language",
+  "includeCustomFormatWhenRenaming": false,
+  "specifications": [
+    {
+      "name": "Danish",
+      "implementation": "LanguageSpecification",
+      "negate": false,
+      "required": true,
+      "fields": {
+        "value": 6
+      }
+    }
+  ]
+}

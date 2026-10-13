@@ -1,0 +1,15 @@
+{
+  "name": "Danish/Nordic Audio",
+  "includeCustomFormatWhenRenaming": false,
+  "specifications": [
+    {
+      "name": "Danish or Nordic tag",
+      "implementation": "ReleaseTitleSpecification",
+      "negate": false,
+      "required": true,
+      "fields": {
+        "value": "(?i)\\b(danish|nordic)\\b"
+      }
+    }
+  ]
+}

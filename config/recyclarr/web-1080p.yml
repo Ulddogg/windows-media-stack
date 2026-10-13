@@ -1,0 +1,36 @@
+# yaml-language-server: $schema=https://schemas.recyclarr.dev/v8/config-schema.json
+################################################################################
+## TRaSH Guides: WEB-1080p  (Sonarr / TV)
+## https://trash-guides.info/Sonarr/sonarr-setup-quality-profiles/#web-1080p
+##
+## API key is read from the environment, NOT stored here:
+##   PowerShell:  $env:SONARR_API_KEY = '...'   (or load from your .env)
+##   then:        recyclarr sync -c config/recyclarr/web-1080p.yml
+################################################################################
+
+sonarr:
+  web-1080p:
+    base_url: http://localhost:8989
+    api_key: !env_var SONARR_API_KEY
+
+    quality_definition:
+      type: series
+
+    quality_profiles:
+      - trash_id: 72dae194fc92bf828f32cde7744e51a1  # WEB-1080p
+        reset_unmatched_scores:
+          enabled: true
+
+    custom_format_groups:
+      # Uncommented groups sync by default. See https://recyclarr.dev/guide/cf-groups/
+      add:
+        - trash_id: 158188097a58d7687dee647e04af0da3  # [Optional] Golden Rule HD
+        - trash_id: 74aff4168620ed49dcc67e92b2c2a5b4  # [Optional] Language Profiles
+        - trash_id: 85fae4a2294965b75710ef2989c850eb  # [Streaming Services] HD/UHD boost
+        - trash_id: 59c3af66780d08332fdc64e68297098f  # [Unwanted] Unwanted Formats
+          # Unwanted by default: AV1, Bad Dual Groups, BR-DISK, Extras, LQ, Upscaled, etc.
+          # (BR-DISK/remux exclusion is what keeps 1080p from ballooning to 20-40 GB.)
+
+      # These sync by default; uncomment to disable:
+      skip:
+        # - abe720fab2d27682adc2a735136cec02  # [Streaming Services] General
