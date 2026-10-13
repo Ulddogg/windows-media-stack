@@ -11,7 +11,9 @@ Plex — installed as real Windows services and scheduled tasks, configured enti
 through each app's REST API, with a VPN kill-switch, hardlink-based storage, and an
 operational runbook an AI agent (Claude Code) can drive.
 
-![Signal path: request in, watched out](docs/images/architecture.svg)
+![The Media Stack Remote — a one-page dashboard that fronts every tool in the stack](docs/images/dashboard.png)
+
+> The repo includes the **[Media Stack Remote](dashboard/media-stack-remote.html)** above — one self-contained page that fronts the whole stack, grouped by what each tool does. Bookmark it as the only link you need. It reflows for the couch, too: [narrow view](docs/images/dashboard-mobile.png).
 
 Most published "arr stacks" are Docker Compose files that run Linux containers. This
 one deliberately isn't: it targets people running everything **directly on Windows**,
@@ -38,6 +40,8 @@ Use it to manage media you have the right to access, and respect copyright.
 ---
 
 ## Architecture at a glance
+
+![Signal path: request in, watched out — Usenet-first, torrent fallback](docs/images/architecture.svg)
 
 ```
 Request (Seerr)  →  Find (Prowlarr)  →  Grab (Sonarr / Radarr)
